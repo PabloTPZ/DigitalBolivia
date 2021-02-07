@@ -22,7 +22,7 @@ import entity.SignatureStudent;
 public class ListStudent extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	public static String search = "";
+	public static boolean isSearch = false;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -54,27 +54,20 @@ public class ListStudent extends HttpServlet {
 		String textSearch = request.getParameter("textSearch");
 		
 		if("edithButton".equals(searchStudentAction)) {
-			
+
+			isSearch = false;
 		}
 		else if("deleteButton".equals(searchStudentAction)) {
 
+			isSearch = false;
 			RegisterDao service = new RegisterDao();
 			service.deleteSubject(6);
             response.sendRedirect("class.jsp");
 		}
 		else if("searchButton".equals(searchStudentAction)){
-			search = textSearch;
+			isSearch = true;
             response.sendRedirect("index.jsp");
 		}
-
-        /*if (user != null) {
-            request.getSession().setAttribute("user", user);
-            response.sendRedirect("home");
-        }
-        else {
-            request.setAttribute("error", "Unknown user, please try again");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
-        }*/
 	}
 
 }

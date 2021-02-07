@@ -57,7 +57,7 @@
 					<div class="container-fluid">
 						<form class="d-flex">
 							<input class="form-control me-2" type="search"
-								placeholder="Search" aria-label="Search">
+								placeholder="Search" aria-label="Search" name="textSearch">
 							<button class="btn btn-outline-success" type="submit">Search</button>
 						</form>
 					</div>
@@ -73,25 +73,39 @@
 						</tr>
 					</thead>
 					<tbody>
-					
+
 						<%
-							RegisterDao service = new RegisterDao();
-						List<Subject> listSubjects = service.getLitsSubject();
-							request.setAttribute("subjects", listSubjects);
+						RegisterDao service = new RegisterDao();
 						%>
-							<c:forEach items="${subjects}" var="emp">
-								<tr>
-									<td><c:out value="${emp.getId()}"></c:out></td>
-									<td><c:out value="${emp.getTitle()}"></c:out></td>
-									<td><c:out value="${emp.getDescription()}"></c:out></td>
-									<td>
-										<form class="d-flex" action="./ListStudent" method="post">
-										<button type="button" class="btn btn-primary" value="edithButton" name="action">Editar</button>
-										<button type="button" class="btn btn-danger" value="deleteButton" name="action">Eliminar</button>
-										</form>
-									</td>
-								</tr>
-							</c:forEach>
+						<c:choose>
+							<c:when test="${param.textSearch == ''}">
+								<%
+								List<Subject> listSubjects = service.getLitsSubject();
+								request.setAttribute("subjects", listSubjects);
+								%>
+							</c:when>
+							<c:otherwise>
+								<%
+								List<Subject> listSubjects = service.getSubjectDataList(request.getParameter("textSearch"));
+								request.setAttribute("subjects", listSubjects);
+								%>
+							</c:otherwise>
+						</c:choose>
+						<c:forEach items="${subjects}" var="emp">
+							<tr>
+								<td><c:out value="${emp.getId()}"></c:out></td>
+								<td><c:out value="${emp.getTitle()}"></c:out></td>
+								<td><c:out value="${emp.getDescription()}"></c:out></td>
+								<td>
+									<form class="d-flex" action="./ListStudent" method="post">
+										<button type="button" class="btn btn-primary"
+											value="edithButton" name="action">Editar</button>
+										<button type="button" class="btn btn-danger"
+											value="deleteButton" name="action">Eliminar</button>
+									</form>
+								</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</div>

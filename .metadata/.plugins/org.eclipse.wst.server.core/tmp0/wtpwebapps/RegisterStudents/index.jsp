@@ -56,7 +56,7 @@
 				aria-labelledby="home-tab">
 				<nav class="navbar navbar-light bg-light">
 					<div class="container-fluid">
-						<form class="d-flex" action="./ListStudent" method="post">
+						<form class="d-flex" action="index.jsp" method="post">
 							<input class="form-control me-2" type="search"
 								placeholder="Search" aria-label="Search" name="textSearch">
 							<button class="btn btn-outline-success" type="submit"
@@ -78,9 +78,22 @@
 					<tbody>
 						<%
 							RegisterDao service = new RegisterDao();
+						%>
+						<c:choose>
+							<c:when test="${param.textSearch == ''}">
+								<%
 							List<SignatureStudent> listStudent = service.getLitStudent();
 							request.setAttribute("students", listStudent);
 						%>
+							</c:when>
+							<c:otherwise>
+								<%
+							List<SignatureStudent> listStudent = service.getStudentDataList(request.getParameter("textSearch"));
+							request.setAttribute("students", listStudent);
+						%>
+							</c:otherwise>
+						</c:choose>
+
 						<c:forEach items="${students}" var="emp">
 							<tr>
 								<td><c:out value="${emp.getId()}"></c:out></td>

@@ -281,5 +281,30 @@ public class RegisterDao {
 		return student;
 
 	}
+
+	public List<Subject> getSubjectDataList(String srt) {
+		loadDriver(dbdriver);
+
+		List<Subject> subjects = new ArrayList<Subject>();
+		Connection con = getConnection();
+		String sql = "SELECT code, title, description FROM Class WHERE title = '" + srt + "'";
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs= st.executeQuery(sql);
+			while (rs.next()) {
+				Subject subject = new Subject();
+				subject.setId(rs.getInt("code"));
+				subject.setTitle(rs.getString("title"));
+				subject.setDescription(rs.getString("description"));
+				subjects.add(subject);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return subjects;
+
+	}
 }
 
