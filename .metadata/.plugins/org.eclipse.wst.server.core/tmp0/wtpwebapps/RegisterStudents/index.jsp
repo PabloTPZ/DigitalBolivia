@@ -56,7 +56,7 @@
 				aria-labelledby="home-tab">
 				<nav class="navbar navbar-light bg-light">
 					<div class="container-fluid">
-						<form class="d-flex" action="./ListStudent" method="get">
+						<form class="d-flex" action="./ListStudent" method="post">
 							<input class="form-control me-2" type="search"
 								placeholder="Search" aria-label="Search" name="textSearch">
 							<button class="btn btn-outline-success" type="submit"
@@ -65,34 +65,37 @@
 					</div>
 				</nav>
 
-
-				<form action="./ListStudent" method="get">
-					<table class="table">
-						<thead>
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Nombres</th>
+							<th scope="col">Apellidos</th>
+							<th scope="col">Clase</th>
+							<th scope="col">Acción</th>
+						</tr>
+					</thead>
+					<tbody>
+						<%
+							RegisterDao service = new RegisterDao();
+							List<SignatureStudent> listStudent = service.getLitStudent();
+							request.setAttribute("students", listStudent);
+						%>
+						<c:forEach items="${students}" var="emp">
 							<tr>
-								<th scope="col">#</th>
-								<th scope="col">Nombres</th>
-								<th scope="col">Apellidos</th>
-								<th scope="col">Clase</th>
-								<th scope="col">Acción</th>
+								<td><c:out value="${emp.getId()}"></c:out></td>
+								<td><c:out value="${emp.getLast_name()}"></c:out></td>
+								<td><c:out value="${emp.getFirst_name()}"></c:out></td>
+								<td><c:out value="${emp.getTitle()}"></c:out></td>
+								<td>
+									<button type="button" class="btn btn-primary">Editar</button>
+									<button type="button" class="btn btn-danger">Eliminar</button>
+								</td>
 							</tr>
-						</thead>
-						<tbody>
-							<c:forEach items="${requestScope.listStudents}" var="emp">
-								<tr>
-									<td><c:out value="${emp.getId()}"></c:out></td>
-									<td><c:out value="${emp.getLast_name()}"></c:out></td>
-									<td><c:out value="${emp.getFirst_name()}"></c:out></td>
-									<td><c:out value="${emp.getTitle()}"></c:out></td>
-									<td>
-										<button type="button" class="btn btn-primary">Editar</button>
-										<button type="button" class="btn btn-danger">Eliminar</button>
-									</td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-				</form>
+						</c:forEach>
+					</tbody>
+				</table>
+
 			</div>
 
 			<!-- Registro de estudiante -->
@@ -115,8 +118,12 @@
 								materia</label> <select class="form-select form-select-lg mb-3"
 								aria-label=".form-select-lg example">
 								<option selected>Open this select menu</option>
-								<c:forEach items="${requestScope.list}" var="sub">
-									<option value="${sub.getId()}">${sub.getTitle()}"</option>
+								<%
+									List<Subject> listSubjects = service.getLitsSubject();
+									request.setAttribute("subjects", listSubjects);
+								%>
+								<c:forEach items="${subjects}" var="sub">
+									<option value="${sub.getId()}">${sub.getTitle()}</option>
 								</c:forEach>
 							</select>
 						</div>

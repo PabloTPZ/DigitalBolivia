@@ -253,5 +253,33 @@ public class RegisterDao {
 		}
 		return result;
 	}
+	
+	public List<SignatureStudent> getStudentDataList(String srt) {
+		loadDriver(dbdriver);
+
+		String result = "Successfully";
+		List<SignatureStudent> student = new ArrayList<SignatureStudent>();
+		Connection con = getConnection();
+		String sql = "SELECT id_student, last_name, first_name, title FROM Student, Class, Student_Class WHERE last_name = '" + srt + "' and Student_id_student = id_student and code = Class_code";
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs= st.executeQuery(sql);
+			while (rs.next()) {
+				SignatureStudent user= new SignatureStudent();
+				user.setId(rs.getInt("id_student"));
+				user.setFirst_name(rs.getString("first_name"));
+				user.setLast_name(rs.getString("last_name"));
+				user.setTitle(rs.getString("title"));
+				student.add(user);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			result = "Error";
+		}
+		return student;
+
+	}
 }
 

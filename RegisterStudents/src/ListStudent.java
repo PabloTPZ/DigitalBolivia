@@ -21,13 +21,14 @@ import entity.SignatureStudent;
 @WebServlet("/ListStudent")
 public class ListStudent extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	public static String search = "";
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public ListStudent() {
         super();
-        System.out.println("-------------------------");
         // TODO Auto-generated constructor stub
     }
 
@@ -36,13 +37,11 @@ public class ListStudent extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-System.out.println("-------------------------");
 		HttpSession session = request.getSession();
 		RegisterDao service = new RegisterDao();
 		List<SignatureStudent> list = service.getLitStudent();
 		session.setAttribute("listStudents", list);
-		RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
-		rd.forward(request, response);
+		request.getRequestDispatcher("index.jsp").forward(request, response);
 	}
 
 	/**
@@ -50,7 +49,32 @@ System.out.println("-------------------------");
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+
+		String searchStudentAction = request.getParameter("action");
+		String textSearch = request.getParameter("textSearch");
+		
+		if("edithButton".equals(searchStudentAction)) {
+			
+		}
+		else if("deleteButton".equals(searchStudentAction)) {
+
+			RegisterDao service = new RegisterDao();
+			service.deleteSubject(6);
+            response.sendRedirect("class.jsp");
+		}
+		else if("searchButton".equals(searchStudentAction)){
+			search = textSearch;
+            response.sendRedirect("index.jsp");
+		}
+
+        /*if (user != null) {
+            request.getSession().setAttribute("user", user);
+            response.sendRedirect("home");
+        }
+        else {
+            request.setAttribute("error", "Unknown user, please try again");
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+        }*/
 	}
 
 }

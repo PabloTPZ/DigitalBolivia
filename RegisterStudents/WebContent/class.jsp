@@ -1,5 +1,7 @@
-<%@page import="java.util.List"%>
-<%@page import="entity.Subject"%>
+<%@page import="java.util.*"%>
+<%@page import="entity.*"%>
+<%@page import="entity.*"%>
+<%@page import="connection.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -72,14 +74,21 @@
 					</thead>
 					<tbody>
 					
-							<c:forEach items="${requestScope.list}" var="emp">
+						<%
+							RegisterDao service = new RegisterDao();
+						List<Subject> listSubjects = service.getLitsSubject();
+							request.setAttribute("subjects", listSubjects);
+						%>
+							<c:forEach items="${subjects}" var="emp">
 								<tr>
 									<td><c:out value="${emp.getId()}"></c:out></td>
 									<td><c:out value="${emp.getTitle()}"></c:out></td>
 									<td><c:out value="${emp.getDescription()}"></c:out></td>
 									<td>
-										<button type="button" class="btn btn-primary">Editar</button>
-										<button type="button" class="btn btn-danger">Eliminar</button>
+										<form class="d-flex" action="./ListStudent" method="post">
+										<button type="button" class="btn btn-primary" value="edithButton" name="action">Editar</button>
+										<button type="button" class="btn btn-danger" value="deleteButton" name="action">Eliminar</button>
+										</form>
 									</td>
 								</tr>
 							</c:forEach>
