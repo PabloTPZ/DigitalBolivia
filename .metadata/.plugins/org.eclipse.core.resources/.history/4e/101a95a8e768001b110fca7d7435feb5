@@ -1,0 +1,23 @@
+package entity;
+
+public class GenericClass {
+	private int id;
+
+	public GenericClass(int id) {
+		super();
+		this.id = id;
+	}
+
+	public GenericClass() {
+		super();
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+		
+}

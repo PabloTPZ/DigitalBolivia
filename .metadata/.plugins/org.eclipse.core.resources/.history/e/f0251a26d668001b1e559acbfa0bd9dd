@@ -1,0 +1,65 @@
+
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+/**
+ * Servlet implementation class RegisterStudents
+ */
+@WebServlet("/RegisterStudents")
+public class RegisterStudents extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public RegisterStudents() {
+        super();
+		System.out.print("++++++++++++++Register++++++++++");
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+
+		HttpSession session = request.getSession();
+		RegisterDao service = new RegisterDao();
+		List<SignatureStudent> list = service.getLitStudent();
+		for (int i = 0 ; i < list.size(); i++) {
+			System.out.println("DB username : "+list.get(i).getFirst_name() +" and pass : "+list.get(i).getLast_name()) ;
+		}
+		//session.setAttribute("list", list);
+		//response.sendRedirect("home.jsp");
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+		String lastNanmeStudent = request.getParameter("lastNameRegister");
+		String nameStudent = request.getParameter("nameRegister");
+		String registerAction = request.getParameter("action");
+		
+		System.out.println("+++++++++++++-------"+ nameStudent);
+		
+		Student student = new Student(lastNanmeStudent, nameStudent);
+		
+		RegisterDao registerDao = new RegisterDao();
+		
+		String result = registerDao.insert(student);
+		response.getWriter().print(result);
+	}
+
+}
