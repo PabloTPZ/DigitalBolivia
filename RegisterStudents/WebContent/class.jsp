@@ -97,12 +97,10 @@
 								<td><c:out value="${emp.getTitle()}"></c:out></td>
 								<td><c:out value="${emp.getDescription()}"></c:out></td>
 								<td>
-									<form class="d-flex" action="./ListStudent" method="post">
-										<button type="button" class="btn btn-primary"
-											value="edithButton" name="action">Editar</button>
-										<button type="button" class="btn btn-danger"
-											value="deleteButton" name="action">Eliminar</button>
-									</form>
+									<button type="button" class="btn btn-primary"
+										value="edithButton" name="edithButton">Editar</button>
+									<button type="button" class="btn btn-danger"
+										value="deleteButton" name="deleteButton" onclick="sjavascript:deleteClass('deleteclass.jsp?id=<c:out value="${emp.getId()}"/>')">Eliminar</button>
 								</td>
 							</tr>
 						</c:forEach>
@@ -131,8 +129,12 @@
 			</div>
 		</div>
 	</div>
-
-
+	
+	<script>
+            function deleteClass(m) {
+            	window.location = m;
+            }
+    </script>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"

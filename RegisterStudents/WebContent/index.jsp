@@ -102,7 +102,7 @@
 								<td><c:out value="${emp.getTitle()}"></c:out></td>
 								<td>
 									<button type="button" class="btn btn-primary">Editar</button>
-									<button type="button" class="btn btn-danger">Eliminar</button>
+									<button type="button" class="btn btn-danger" onclick="sjavascript:deleteStudent('deletestudent.jsp?id=<c:out value="${emp.getId()}"/>')">Eliminar</button>
 								</td>
 							</tr>
 						</c:forEach>
@@ -128,8 +128,9 @@
 						</div>
 						<div class="mb-3">
 							<label for="exampleInputPassword1" class="form-label">Asignar
-								materia</label> <select class="form-select form-select-lg mb-3"
-								aria-label=".form-select-lg example">
+								materia</label> 
+								<select class="form-select form-select-lg mb-3"
+								aria-label=".form-select-lg example" name="optionClass">
 								<option selected>Open this select menu</option>
 								<%
 									List<Subject> listSubjects = service.getLitsSubject();
@@ -148,6 +149,11 @@
 		</div>
 	</div>
 
+	<script>
+            function deleteStudent(m) {
+            	window.location = m;
+            }
+    </script>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"

@@ -38,16 +38,32 @@ public class RegisterDao {
 		return con;
 	}
 	
-	public String insert(Student student) {	
+	public String insert(Student student, int cl) {	
 		loadDriver(dbdriver);
 		
 		Connection con = getConnection();
 		String result = "Successfully";
-		String sql = "INSERT INTO `Student`(`last_name`, `first_name`) VALUES (?,?)";
+		String sql = "INSERT INTO `Student`(`last_name`, `first_name`) VALUES (?,?);";
+		Integer id = 0;
 		try {
-			PreparedStatement ps = con.prepareStatement(sql.toString());
+			PreparedStatement ps = con.prepareStatement(sql.toString(),Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, student.getLastName());
 			ps.setString(2, student.getFirtName());
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next()){
+				id = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			result = "Error";
+		}
+		String sqlRelation = "INSERT INTO `Student_Class`(`Student_id_student`, `Class_code`) VALUES (?,?);";
+		try {
+			PreparedStatement ps = con.prepareStatement(sqlRelation.toString());
+			ps.setInt(1, id);
+			ps.setInt(2, cl);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -197,7 +213,7 @@ public class RegisterDao {
 		
 		Connection con = getConnection();
 		String result = "Successfully";
-		String sql = "DELETE FROM Class WHERE code=" + id;
+		String sql = "DELETE FROM Class WHERE code = '" + id + "'";
 		try {
 			Statement st = con.createStatement();
 			st.executeUpdate(sql);

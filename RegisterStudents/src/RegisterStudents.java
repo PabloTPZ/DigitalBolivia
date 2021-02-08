@@ -43,12 +43,13 @@ public class RegisterStudents extends HttpServlet {
 
 		String nameRegister = request.getParameter("nameRegister");
 		String lastNameRegister = request.getParameter("lastNameRegister");
+		String selectedvalue  =  request.getParameter("optionClass");
 		
 		Student student = new Student(nameRegister, lastNameRegister);
 		
 		RegisterDao registerDao = new RegisterDao();
 		
-		String result = registerDao.insert(student);
+		String result = registerDao.insert(student, Integer.valueOf(selectedvalue));
 		response.getWriter().print(result);	
 		
 	}
